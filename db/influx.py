@@ -32,38 +32,6 @@ class InfluxDatabase:
     
     def __exit__(self, exc_type, exc_value, exc_trace):
         self.__db_handle.close()
-    
-    def _condition_resultset_to_json(self, result_set):
-        self.log.debug(result_set)
-
-        return 0
-    
-    def submit_forecast(self, station_id, json_data):
-        periods = json_data["properties"]["periods"]
-
-        json_body = []
-
-        for period in periods:
-            series_data = {
-                "measurement": "forecast_period",
-                "tags": {
-                    "station_id": station_id
-                },
-                "time": datetime.now(),
-                "fields": {
-                    "start_time": period["startTime"],
-                    "end_time": period["endTime"],
-                    "temperature": period["temperature"],
-                    "wind_speed": period["windSpeed"],
-                    "wind_direction": period["windDirection"],
-                    "icon": period["icon"],
-                    "short_forecast": period["shortForecast"],
-                    "detailed_forecast": period["detailedForecast"]
-                }
-            }
-            json_body.append(series_data)
-        
-        self.__db_handle.write_points(json_body)
             
     def submit_conditions(self, station_id, json_data):
         properties = json_data["properties"]
@@ -89,11 +57,8 @@ class InfluxDatabase:
 
         self.__db_handle.write_points(series_data)
     
-    def latest_forecast(self, station_id):
-        pass
-    
     def current_conditions(self, station_id):
-        query_string = f"""select last("temperature"),"dewpoint","wind_speed","wind_direction","barometric_pressure","relative_humidity","heat_index" from current_conditions where "station_id" = '{station_id}'"""
+        query_string = f"""select *::field from current_conditions where "station_id" = '{station_id}' group by station_id order by time desc limit 1"""
         
         result = self.__db_handle.query(query_string, method="POST")
 
@@ -101,7 +66,7 @@ class InfluxDatabase:
 
         self.log.debug(data)
 
-        return self._condition_resultset_to_json(result)
+        return data
         
 
 

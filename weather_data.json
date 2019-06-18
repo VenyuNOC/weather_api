@@ -1,63 +1,30 @@
 {
     "locations": [
         {
-            "station_id": "BTR",
+            "id": "BTR",
             "display_name": "Baton Rouge, LA",
-            "forecast": {
-                "url": "https://api.weather.gov/gridpoints/LIX/27,114/forecast",
-                "interval": 720,
-                "when": [
-                    "0600",
-                    "1800"
-                ]
-            },
-            "conditions": {
-                "url": "https://api.weather.gov/stations/KBTR/observations/latest",
-                "interval": 30
-            },
-            "headlines": {
-                "url": "https://api.weather.gov/offices/LIX/headlines",
-                "interval": 1440,
-                "when": ["0000"]
+            "urls": {
+                "forecast": "https://api.weather.gov/gridpoints/LIX/27,114/forecast",
+                "conditions": "https://api.weather.gov/stations/KBTR/observations/latest",
+                "headlines": "https://api.weather.gov/offices/LIX/headlines"
             }
         },
         {
-            "station_id": "SHV",
+            "id": "SHV",
             "display_name": "Shreveport, LA",
-            "forecast": {
-                "url": "https://api.weather.gov/gridpoints/SHV/73,66/forecast",
-                "interval": 720,
-                "when": [
-                    "0600",
-                    "1800"
-                ]
-            },
-            "conditions":{
-                "url": "https://api.weather.gov/stations/KSHV/observations/latest",
-                "interval": 30
-            },
-            "headlines": {
-                "url": "https://api.weather.gov/offices/SHV/headlines",
-                "interval": 1440,
-                "when": ["0000"]
+            "urls": {
+                "forecast": "https://api.weather.gov/gridpoints/SHV/73,66/forecast",
+                "conditions": "https://api.weather.gov/stations/KSHV/observations/latest",
+                "headlines": "https://api.weather.gov/offices/SHV/headlines"
             }
         }
     ],
     "global": {
-        "alerts": {
-            "url": "https://api.weather.gov/alerts/active/area/LA",
-            "interval": 60
-        },
-        "tropical": {
-            "pacific": {
-                "url": "https://www.nhc.noaa.gov/xgtwo/two_pac_2d0.png",
-                "interval": 1440,
-                "when": ["0000"]
-            },
-            "atlantic": {
-                "url": "https://www.nhc.noaa.gov/xgtwo/two_atl_2d0.png",
-                "interval": 1440,
-                "when": ["0000"]
+        "urls": {
+            "alerts": "https://api.weather.gov/alerts/active/area/LA",
+            "tropical": {
+                "atlantic": "https://www.nhc.noaa.gov/xgtwo/two_atl_2d0.png",
+                "pacific": "https://www.nhc.noaa.gov/xgtwo/two_pac_2d0.png"
             }
         }
     }

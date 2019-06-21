@@ -9,7 +9,10 @@ class SqliteDatabase:
         self.station_id = station_id
 
         self.__db_handle = sqlite3.connect('forecast.db')
-        self.__db_handle.execute(f'''CREATE TABLE IF NOT EXISTS {self.station_id}(name text, number integer primarykey, startTime text, endTime text, temperature real, windSpeed text, windDirection text, icon text, shortForecast text, detailedForecast text);''')
+
+        cursor = self.__db_handle.cursor()
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.station_id}(name text, number integer primarykey, startTime text, endTime text, temperature real, windSpeed text, windDirection text, icon text, shortForecast text, detailedForecast text);''')
+        cursor.close()
     
     def __enter__(self):
         return self
@@ -21,12 +24,18 @@ class SqliteDatabase:
         rows = [
             (period["name"], period["number"], period["startTime"], period["endTime"], period["temperature"], period["windSpeed"], period["windDirection"], period["icon"], period["shortForecast"], period["detailedForecast"]) for period in forecast
         ]
+
+        for row in rows:
+            print(row)
         
-        self.__db_handle.execute(f'''DELETE * FROM {self.station_id};''')
-        self.__db_handle.executemany(f'''INSERT INTO {self.station_id} 
+        cursor = self.__db_handle.cursor()
+        cursor.execute(f'''DELETE FROM {self.station_id.upper()};''')
+        cursor.executemany(f'''INSERT INTO {self.station_id.upper()} 
                                         (name, number, startTime, endTime, temperature, windSpeed, windDirection, icon, shortForecast, detailedForecast) 
                                         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
                                     rows)
+        self.__db_handle.commit()
+        cursor.close()
 
     def get_nday_forecast(self, ndays=7):
         query_string = f"""SELECT name, number, startTime, endTime, temperature, windSpeed, windDirection, icon, shortForecast, detailedForecast
@@ -41,10 +50,13 @@ class SqliteDatabase:
             "station_id": self.station_id
         }
 
-        cursor = self.__db_handle.execute(query_string, (2 * ndays, ))
-        forecast["periods"] = [
+        cursor = self.__db_handle.cursor()
+
+        cursor.execute(query_string, (2 * ndays, ))
+        '''forecast["periods"] = [
             (row["name"], row["number"], row["startTime"], row["endTime"], row["temperature"], row["windSpeed"], row["windDirection"], row["icon"], row["shortForecast"], row["detailedForecast"]) for row in cursor.fetchall()
-        ]
+        ]'''
+        forecast["periods"] = [dict(row) for row in cursor.fetchall()]
         cursor.close()
 
         return forecast

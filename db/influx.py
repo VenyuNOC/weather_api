@@ -44,13 +44,13 @@ class InfluxDatabase:
                 },
                 "time": datetime.now(),
                 "fields": {
-                    "temperature": properties["temperature"]["value"],
-                    "dewpoint": properties["dewpoint"]["value"],
-                    "wind_speed": properties["windSpeed"]["value"],
+                    "temperature": float(properties["temperature"]["value"]),
+                    "dewpoint": float(properties["dewpoint"]["value"]),
+                    "wind_speed": float(properties["windSpeed"]["value"]),
                     "wind_direction": properties["windDirection"]["value"],
                     "barometric_pressure": properties["barometricPressure"]["value"],
-                    "relative_humidity": properties["relativeHumidity"]["value"],
-                    "heat_index": properties["heatIndex"]["value"]
+                    "relative_humidity": float(properties["relativeHumidity"]["value"]),
+                    "heat_index": float(properties["heatIndex"]["value"])
                 }
             }
         ]
@@ -58,7 +58,7 @@ class InfluxDatabase:
         self.__db_handle.write_points(series_data)
     
     def current_conditions(self, station_id):
-        query_string = f"""select *::field from current_conditions where "station_id" = '{station_id}' group by station_id order by time desc limit 1"""
+        query_string = f"""select *::field from current_conditions where "station_id" = '{station_id.upper()}' group by station_id order by time desc limit 1"""
         
         result = self.__db_handle.query(query_string, method="POST")
 
@@ -80,6 +80,3 @@ if __name__ == "__main__":
         database.submit_conditions('BTR', r.json())
 
         conditions = database.current_conditions('BTR')
-
-        r = requests.get("https://api.weather.gov/gridpoints/LIX/27,114/forecast")
-        database.submit_forecast('BTR', r.json())

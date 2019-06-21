@@ -1,0 +1,8 @@
+{% extends "master.html" %}
+{% block body %}
+<h1>{{ station_id }}</h1>
+<h1>{{ long_name }}<h1>
+{% for period in forecast %}
+    <h3>{{ period }}</h3>
+{% endfor %}
+{% endblock %}

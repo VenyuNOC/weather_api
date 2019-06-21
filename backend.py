@@ -15,7 +15,6 @@ weather_data = {}
 log.debug('reading and parsing weather data')
 with open('weather_data.json', 'r') as fp:
     weather_data = json.load(fp)
-    log.debug(f'{weather_data}')
 
 schedule_jobs(weather_data)
 
@@ -27,8 +26,7 @@ def conditions(station_id):
     with InfluxDatabase() as database:
         conditions = database.current_conditions(station_id)
     
-    context = { "conditions": conditions }
-    return render_template('conditions.html', context=context)
+    return render_template('conditions.html', conditions=conditions, station_id=station_id, long_name=get_long_name(station_id))
 
 @app.route('/weather/<station_id>/forecast')
 def forecast(station_id):
@@ -36,6 +34,12 @@ def forecast(station_id):
     with SqliteDatabase(station_id) as database:
         forecast = database.get_nday_forecast()
     
-    context = { "forecast": forecast }
-    return render_template('forecast.html', context=context)
+    print(forecast)
+    return render_template('forecast.html', forecast=forecast["periods"], station_id=station_id, long_name=get_long_name(station_id))
 
+def get_long_name(station_id):
+    for station in weather_data["locations"]:
+        if station["id"] == station_id.upper():
+            return station["display_name"]
+        
+    return "Unknown"

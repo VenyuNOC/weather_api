@@ -4,8 +4,8 @@ import logging
 
 
 class SqliteDatabase:
-    def __init__(self, station_id):
-        self.log = logging.getLogger('db.SQLite')
+    def __init__(self, station_id, logger=logging.getLogger('db.SQLite')):
+        self.log = logger
         self.station_id = station_id
 
         self.__db_handle = sqlite3.connect('forecast.db')
@@ -24,9 +24,6 @@ class SqliteDatabase:
         rows = [
             (period["name"], period["number"], period["startTime"], period["endTime"], period["temperature"], period["windSpeed"], period["windDirection"], period["icon"], period["shortForecast"], period["detailedForecast"]) for period in forecast
         ]
-
-        for row in rows:
-            print(row)
         
         cursor = self.__db_handle.cursor()
         cursor.execute(f'''DELETE FROM {self.station_id.upper()};''')
@@ -53,9 +50,6 @@ class SqliteDatabase:
         cursor = self.__db_handle.cursor()
 
         cursor.execute(query_string, (2 * ndays, ))
-        '''forecast["periods"] = [
-            (row["name"], row["number"], row["startTime"], row["endTime"], row["temperature"], row["windSpeed"], row["windDirection"], row["icon"], row["shortForecast"], row["detailedForecast"]) for row in cursor.fetchall()
-        ]'''
         forecast["periods"] = [dict(row) for row in cursor.fetchall()]
         cursor.close()
 

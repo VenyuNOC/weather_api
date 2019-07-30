@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import logging
 
@@ -6,8 +6,8 @@ import influxdb
 
 
 class InfluxDatabase:
-    def __init__(self, host='localhost', port=8086, username='root', password='root', dbname='weather'):
-        self.log = logging.getLogger('db.InfluxDatabase')
+    def __init__(self, host='localhost', port=8086, username='root', password='root', dbname='weather', logger=logging.getLogger('db.InfluxDatabase')):
+        self.log = logger
 
         self.__db_handle = influxdb.InfluxDBClient(host, port, username, password)
         self.log.debug(f'opened connection to database at http://{host}:{port}, u={username},p={password}')
@@ -42,7 +42,7 @@ class InfluxDatabase:
                 "tags": {
                     "station_id": station_id
                 },
-                "time": datetime.now(),
+                "time": datetime.utcnow(),
                 "fields": {
                     "temperature": float(properties["temperature"]["value"]),
                     "dewpoint": float(properties["dewpoint"]["value"]),

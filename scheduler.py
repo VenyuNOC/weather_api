@@ -15,11 +15,12 @@ from db.sqlite import SqliteDatabase
 log = logging.getLogger('weather.backend.scheduler')
 
 now = datetime.now()
-next_run = now - timedelta(minutes=now.minute) - timedelta(hours=now.hour+6)
+next_12 = now - timedelta(minutes=now.minute) - timedelta(hours=now.hour+6)
+next_hour = now + timedelta(minutes=60 - now.minute)
 
-every_15_minutes = IntervalTrigger(minutes=15, start_date=next_run)
-every_12_hours = IntervalTrigger(hours=12, start_date=next_run)
-every_hour = IntervalTrigger(hours=1, start_date=next_run)
+every_15_minutes = IntervalTrigger(minutes=15)
+every_12_hours = IntervalTrigger(hours=12, start_date=next_12)
+every_hour = IntervalTrigger(hours=1, start_date=next_hour)
 
 scheduler = BackgroundScheduler()
 
@@ -47,6 +48,10 @@ def schedule_jobs(weather_data):
     log.info('scheduling alerts update')
     scheduler.add_job(update_alerts, every_hour)
 
+    scheduler.print_jobs()
+
+    scheduler.start()
+
 def update_forecast(station):
     station_id = station["id"]
     log.debug(f'opening connection to database for {station_id}')
@@ -56,7 +61,6 @@ def update_forecast(station):
         r = requests.get(station["urls"]["forecast"])
 
         periods = r.json()["properties"]["periods"]
-        log.debug(f'{periods}')
         database.submit_forecast(periods)
 
 def update_conditions(station):

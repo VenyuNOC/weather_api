@@ -60,8 +60,11 @@ def update_forecast(station):
         log.debug('downloading forecast data')
         r = requests.get(station["urls"]["forecast"])
 
-        periods = r.json()["properties"]["periods"]
-        database.submit_forecast(periods)
+        if r.status_code == 200:
+            periods = r.json()["properties"]["periods"]
+            database.submit_forecast(periods)
+        else:
+            log.error(f'encountered an error downloading forecast data for {station_id}: {r.status_code}')
 
 def update_conditions(station):
     log.debug('connection to current conditions database')
@@ -69,8 +72,11 @@ def update_conditions(station):
         log.debug('downloading conditions data')
         r = requests.get(station["urls"]["conditions"])
 
-        log.debug('adding to database')
-        database.submit_conditions(station["id"], r.json())
+        if r.status_code == 200:
+            log.debug('adding to database')
+            database.submit_conditions(station["id"], r.json())
+        else:
+            log.error(f'encountered an error downloading condition data for {station["id"]}: {r.status_code}')
 
 def update_space_weather():
     log.debug('updated space weather but there was nothing to do...')

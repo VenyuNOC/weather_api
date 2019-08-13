@@ -6,7 +6,8 @@
             "urls": {
                 "forecast": "https://api.weather.gov/gridpoints/LIX/27,114/forecast",
                 "conditions": "https://api.weather.gov/stations/KBTR/observations/latest",
-                "headlines": "https://api.weather.gov/offices/LIX/headlines"
+                "headlines": "https://api.weather.gov/offices/LIX/headlines",
+                "radar": "https://radar.weather.gov/lite/N"
             }
         },
         {

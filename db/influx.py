@@ -44,13 +44,13 @@ class InfluxDatabase:
                 },
                 "time": datetime.utcnow(),
                 "fields": {
-                    "temperature": float(properties["temperature"]["value"]),
-                    "dewpoint": float(properties["dewpoint"]["value"]),
-                    "wind_speed": float(properties["windSpeed"]["value"]),
-                    "wind_direction": properties["windDirection"]["value"],
-                    "barometric_pressure": properties["barometricPressure"]["value"],
-                    "relative_humidity": float(properties["relativeHumidity"]["value"]),
-                    "heat_index": float(properties["heatIndex"]["value"])
+                    "temperature": float(properties["temperature"]["value"] or 0.0),
+                    "dewpoint": float(properties["dewpoint"]["value"] or 0.0),
+                    "wind_speed": float(properties["windSpeed"]["value"] or 0.0),
+                    "wind_direction": float(properties["windDirection"]["value"] or 0.0),
+                    "barometric_pressure": float(properties["barometricPressure"]["value"] or 0.0),
+                    "relative_humidity": float(properties["relativeHumidity"]["value"] or 0.0),
+                    "heat_index": float(properties["heatIndex"]["value"] or 0.0)
                 }
             }
         ]

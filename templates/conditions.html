@@ -1,6 +1,30 @@
 {% extends "master.html" %}
 {% block body %}
-<h1>{{ long_name }}</h1>
-<h1>{{ station_id }}</h1>
-<h1>{{ conditions }}</h1>
+
+<main>
+    <div id="conditions">
+        <div id="radar">
+            <div id="radar-header">
+                <h3>Current radar image for {{ long_name }}</h3>
+            </div>
+            <div id="radar-image">
+            
+            </div>
+        </div>
+        <div id="details">
+        
+        </div>
+    </div>
+    <div id="layers">
+        <table id="layer-table">
+            <caption>Observable clouds</caption>
+            <tr>
+                <td>
+                    
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+
 {% endblock %}

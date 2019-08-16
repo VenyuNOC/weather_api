@@ -4,6 +4,8 @@ import logging
 
 import influxdb
 
+import converters
+
 
 class InfluxDatabase:
     def __init__(self, host='localhost', port=8086, username='root', password='root', dbname='weather', logger=logging.getLogger('db.InfluxDatabase')):
@@ -44,13 +46,13 @@ class InfluxDatabase:
                 },
                 "time": datetime.utcnow(),
                 "fields": {
-                    "temperature": float(properties["temperature"]["value"] or 0.0),
-                    "dewpoint": float(properties["dewpoint"]["value"] or 0.0),
-                    "wind_speed": float(properties["windSpeed"]["value"] or 0.0),
+                    "temperature": converters.c2f(float(properties["temperature"]["value"] or 0.0)),
+                    "dewpoint": converters.c2f(float(properties["dewpoint"]["value"] or 0.0)),
+                    "wind_speed": converters.mps2mph(float(properties["windSpeed"]["value"] or 0.0)),
                     "wind_direction": float(properties["windDirection"]["value"] or 0.0),
-                    "barometric_pressure": float(properties["barometricPressure"]["value"] or 0.0),
+                    "barometric_pressure": converters.p2inHg(float(properties["barometricPressure"]["value"] or 0.0)),
                     "relative_humidity": float(properties["relativeHumidity"]["value"] or 0.0),
-                    "heat_index": float(properties["heatIndex"]["value"] or 0.0)
+                    "heat_index": converters.c2f(float(properties["heatIndex"]["value"] or 0.0))
                 }
             }
         ]

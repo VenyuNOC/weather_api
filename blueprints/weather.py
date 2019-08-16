@@ -22,7 +22,8 @@ def conditions(station_id):
     context = {
         'conditions': conditions,
         'station_id': station_id,
-        'long_name': get_long_name(station_id)
+        'long_name': get_long_name(station_id),
+        'radar': weather_data['locations'][id==station_id]['urls']['radar']
     }
     
     if 'kiosk' in request.args.keys():

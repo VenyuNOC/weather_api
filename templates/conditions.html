@@ -1,29 +1,68 @@
 {% extends "master.html" %}
-{% block body %}
 
-<main>
-    <div id="conditions">
-        <div id="radar">
-            <div id="radar-header">
-                <h3>Current radar image for {{ long_name }}</h3>
+{% block body %}
+<main class="w3-container w3-theme-d5 w3-padding-16">
+    <div id="conditions" class="w3-container">
+        <div class="w3-row-padding w3-theme">
+            <h1 class="indent w3-theme-d1">Current Conditions ({{ station_id | upper }})</h1>
+        </div>
+        <div class="w3-row-padding zero-right-padding w3-theme">
+            <div id="radar" class="w3-half w3-center w3-padding-16 w3-theme-d1 w3-margin-bottom">
+                <div id="radar-header">
+                    <h3>Current radar image for {{ long_name }}</h3>
+                </div>
+                <div id="radar-image">
+                    <img src="{{ radar }}" alt="Radar image for {{ long_name }}">
+                </div>
             </div>
-            <div id="radar-image">
-            
+            <div class="w3-half">
+                <div id="details" class="w3-row-padding w3-margin-bottom w3-theme-d1">
+                    <table id="condition-detail-table" class="w3-table w3-striped w3-bordered w3-xlarge w3-theme-l3 w3-margin-top w3-margin-right w3-margin-bottom">
+                        <tr>
+                            <th>Measurement</th>
+                            <th class="w3-right-align">Value</th>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td class="w3-right-align">{{ conditions.temperature | round(1) }} &deg;F</td>
+                        </tr>
+                        <tr>
+                            <td>Dewpoint</td>
+                            <td class="w3-right-align">{{ conditions.dewpoint | round(1) }} &deg;F</td>
+                        </tr>
+                        <tr>
+                            <td>Heat Index</td>
+                            <td class="w3-right-align">{{ conditions.heat_index | round(1) }} &deg;F</td>
+                        </tr>
+                        <tr>
+                            <td>Humidity</td>
+                            <td class="w3-right-align">{{ conditions.relative_humidity | round(1) }} %</td>
+                        </tr>
+                        <tr>
+                            <td>Barometric Pressure</td>
+                            <td class="w3-right-align">{{ conditions.barometric_pressure | round(1) }}"</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="layers" class="w3-row-padding w3-margin-top w3-theme-d1">
+                    <table id="layer-table" class="w3-table w3-theme-l3 w3-margin-top w3-margin-right">
+                        <tr>
+                            <th>Lowest altitude</th>
+                            <th class="w3-right-align">Extent</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Coming soon, to a monitoring app near you!
+                            </td>
+                        </tr>
+                    </table>
+                    <span class="w3-padding-large"><small>&Dagger; Altitudes given in feet AGL</small></span>
+                </div>
+                <div id="winds" class="w3-row-padding w3-margin-top w3-theme-d1">
+                    <h4 class="indent w3-theme-l3">Winds {{ conditions.wind_direction }}&deg; at {{conditions.wind_speed | round(1) }}mph</h4>
+                </div>
             </div>
         </div>
-        <div id="details">
-        
-        </div>
-    </div>
-    <div id="layers">
-        <table id="layer-table">
-            <caption>Observable clouds</caption>
-            <tr>
-                <td>
-                    
-                </td>
-            </tr>
-        </table>
     </div>
 </main>
 

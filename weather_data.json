@@ -7,7 +7,7 @@
                 "forecast": "https://api.weather.gov/gridpoints/LIX/27,114/forecast",
                 "conditions": "https://api.weather.gov/stations/KBTR/observations/latest",
                 "headlines": "https://api.weather.gov/offices/LIX/headlines",
-                "radar": "https://radar.weather.gov/lite/N"
+                "radar": "https://radar.weather.gov/lite/N0R/LIX_loop.gif"
             }
         },
         {
@@ -16,7 +16,8 @@
             "urls": {
                 "forecast": "https://api.weather.gov/gridpoints/SHV/73,66/forecast",
                 "conditions": "https://api.weather.gov/stations/KSHV/observations/latest",
-                "headlines": "https://api.weather.gov/offices/SHV/headlines"
+                "headlines": "https://api.weather.gov/offices/SHV/headlines",
+                "radar": "https://radar.weather.gov/lite/N0R/SHV_loop.gif"
             }
         }
     ],

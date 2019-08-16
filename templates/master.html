@@ -5,15 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
     <link rel="stylesheet" href="/static/style.css">
     <title>NOC Weather Monitoring</title>
 </head>
-<body>
-    {% block header %}
-    {% endblock %}
-    {% block body %}
-    {% endblock %}
-    {% block footer %}
-    {% endblock %}
+<body class="w3-theme-d5">
+    <header>
+        {% block header %}
+        <div class="w3-display-container w3-container">
+            <div class="w3-right">
+                <h1><b>WEATHER MONITORING</b></h1>
+            </div>
+            <div class="w3-left">
+                <img src="/static/logo.jpeg" alt="EATEL Business, part of the RCC family of companies">
+            </div>
+        </div>
+        {% endblock %}
+    </header>
+    <div class="content">
+        {% block body %}
+        {% endblock %}
+        <div class="push"></div>
+    </div>
+    <footer>
+        {% block footer %}
+        <div class="w3-container">
+            <small>
+                <span class="w3-right">Weather data and images generously provided by the National Weather Service and the National Hurricane Center.</span>
+            </small>
+        </div>
+        {% endblock %}
+    </footer>
 </body>
 </html>

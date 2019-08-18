@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-dark-grey.css">
     <link rel="stylesheet" href="/static/style.css">
     <title>NOC Weather Monitoring</title>
+    {% if next %}
+    <meta http-equiv="refresh" content="900; url={{ next }}">
+    {% else %}
+    <meta http-equiv="refresh" content="900">
+    {% endif %}
 </head>
 <body class="w3-theme-d5">
     <header>

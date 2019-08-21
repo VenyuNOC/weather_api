@@ -46,16 +46,20 @@ class InfluxDatabase:
                 },
                 "time": datetime.utcnow(),
                 "fields": {
-                    "temperature": converters.c2f(float(properties["temperature"]["value"] or 0.0)),
-                    "dewpoint": converters.c2f(float(properties["dewpoint"]["value"] or 0.0)),
-                    "wind_speed": converters.mps2mph(float(properties["windSpeed"]["value"] or 0.0)),
-                    "wind_direction": float(properties["windDirection"]["value"] or 0.0),
-                    "barometric_pressure": converters.p2inHg(float(properties["barometricPressure"]["value"] or 0.0)),
-                    "relative_humidity": float(properties["relativeHumidity"]["value"] or 0.0),
-                    "heat_index": converters.c2f(float(properties["heatIndex"]["value"] or 0.0))
+                    "temperature": converters.c2f(float(properties["temperature"]["value"] or None)),
+                    "dewpoint": converters.c2f(float(properties["dewpoint"]["value"] or None)),
+                    "wind_speed": converters.mps2mph(float(properties["windSpeed"]["value"] or None)),
+                    "wind_direction": float(properties["windDirection"]["value"] or None),
+                    "barometric_pressure": converters.p2inHg(float(properties["barometricPressure"]["value"] or None)),
+                    "relative_humidity": float(properties["relativeHumidity"]["value"] or None),
+                    "heat_index": converters.c2f(float(properties["heatIndex"]["value"] or None))
                 }
             }
         ]
+
+        for key in series_data['fields'].keys():
+            if series_data['fields'][key] is None:
+                del(series_data['fields'][key])
 
         self.__db_handle.write_points(series_data)
     

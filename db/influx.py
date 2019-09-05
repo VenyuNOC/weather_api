@@ -46,20 +46,16 @@ class InfluxDatabase:
                 },
                 "time": datetime.utcnow(),
                 "fields": {
-                    "temperature": converters.c2f(float(properties["temperature"]["value"] or None)),
-                    "dewpoint": converters.c2f(float(properties["dewpoint"]["value"] or None)),
-                    "wind_speed": converters.mps2mph(float(properties["windSpeed"]["value"] or None)),
-                    "wind_direction": float(properties["windDirection"]["value"] or None),
-                    "barometric_pressure": converters.p2inHg(float(properties["barometricPressure"]["value"] or None)),
-                    "relative_humidity": float(properties["relativeHumidity"]["value"] or None),
-                    "heat_index": converters.c2f(float(properties["heatIndex"]["value"] or None))
+                    **({"temperature": float(properties["temperature"]["value"])} if properties["temperature"]["value"] else {}),
+                    **({"dewpoint": float(properties["dewpoint"]["value"])} if properties["dewpoint"]["value"] else {}),
+                    **({"wind_speed": float(properties["windSpeed"]["value"])} if properties["windSpeed"]["value"] else {}),
+                    **({"wind_direction": float(properties["windDirection"]["value"])} if properties["windSpeed"]["direction"] else {}),
+                    **({"barometric_pressure": float(properties["barometricPressure"]["value"])} if properties["barometricPressure"]["value"] else {}),
+                    **({"relative_humidity": float(properties["relativeHumidity"]["value"])} if properties["relativeHumidity"]["value"] else {}),
+                    **({"heat_index": float(properties["heatIndex"]["value"])} if properties["heatIndex"]["value"] else {})
                 }
             }
         ]
-
-        for key in series_data['fields'].keys():
-            if series_data['fields'][key] is None:
-                del(series_data['fields'][key])
 
         self.__db_handle.write_points(series_data)
     

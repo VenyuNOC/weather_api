@@ -38,6 +38,8 @@ class InfluxDatabase:
     def submit_conditions(self, station_id, json_data):
         properties = json_data["properties"]
 
+        fields = self.__get_fields(properties)
+
         series_data = [
             {
                 "measurement": "current_conditions",
@@ -45,19 +47,21 @@ class InfluxDatabase:
                     "station_id": station_id
                 },
                 "time": datetime.utcnow(),
-                "fields": {
-                    "temperature": converters.c2f(float(properties["temperature"]["value"] or 0.0)),
-                    "dewpoint": converters.c2f(float(properties["dewpoint"]["value"] or 0.0)),
-                    "wind_speed": converters.mps2mph(float(properties["windSpeed"]["value"] or 0.0)),
-                    "wind_direction": float(properties["windDirection"]["value"] or 0.0),
-                    "barometric_pressure": converters.p2inHg(float(properties["barometricPressure"]["value"] or 0.0)),
-                    "relative_humidity": float(properties["relativeHumidity"]["value"] or 0.0),
-                    "heat_index": converters.c2f(float(properties["heatIndex"]["value"] or 0.0))
-                }
+                "fields": fields
             }
         ]
 
         self.__db_handle.write_points(series_data)
+    
+    def __get_fields(self, properties):
+        field_names = ['temperature', 'dewpoint', 'windSpeed', 'windDirection', 'barometricPressure', 'relativeHumidity', 'heatIndex']
+        fields = {field_name: float(properties[field_name]["value"]) for field_name in field_names if self.__check_field(field_name)}
+
+        return fields
+
+    def __check_field(self, properties, field_name):
+        checkedField = float(properties[field_name]["value"])
+        return checkedField != None
     
     def current_conditions(self, station_id):
         query_string = f"""select *::field from current_conditions where "station_id" = '{station_id.upper()}' group by station_id order by time desc limit 1"""

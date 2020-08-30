@@ -55,7 +55,7 @@ class InfluxDatabase:
     
     def __get_fields(self, properties):
         field_names = ['temperature', 'dewpoint', 'windSpeed', 'windDirection', 'barometricPressure', 'relativeHumidity', 'heatIndex']
-        fields = {field_name: float(properties[field_name]["value"]) for field_name in field_names if self.__check_field(field_name)}
+        fields = {field_name: float(properties[field_name]["value"]) for field_name in field_names if self.__check_field(properties, field_name)}
 
         return fields
 

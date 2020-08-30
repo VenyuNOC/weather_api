@@ -51,6 +51,8 @@ class InfluxDatabase:
             }
         ]
 
+        self.log.debug(f'writing conditions data for {station_id}: {series_data}')
+
         self.__db_handle.write_points(series_data)
     
     def __get_fields(self, properties):

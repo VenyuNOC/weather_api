@@ -38,6 +38,8 @@ class InfluxDatabase:
     def submit_conditions(self, station_id, json_data):
         properties = json_data["properties"]
 
+        fields = self.__get_fields(properties)
+
         series_data = [
             {
                 "measurement": "current_conditions",
@@ -45,6 +47,9 @@ class InfluxDatabase:
                     "station_id": station_id
                 },
                 "time": datetime.utcnow(),
+<<<<<<< HEAD:db/influx.py
+                "fields": fields
+=======
                 "fields": {
                     **({"temperature": float(properties["temperature"]["value"])} if properties["temperature"]["value"] else {}),
                     **({"dewpoint": float(properties["dewpoint"]["value"])} if properties["dewpoint"]["value"] else {}),
@@ -54,10 +59,23 @@ class InfluxDatabase:
                     **({"relative_humidity": float(properties["relativeHumidity"]["value"])} if properties["relativeHumidity"]["value"] else {}),
                     **({"heat_index": float(properties["heatIndex"]["value"])} if properties["heatIndex"]["value"] else {})
                 }
+>>>>>>> master:app/db/influx.py
             }
         ]
 
+        self.log.debug(f'writing conditions data for {station_id}: {series_data}')
+
         self.__db_handle.write_points(series_data)
+    
+    def __get_fields(self, properties):
+        field_names = ['temperature', 'dewpoint', 'windSpeed', 'windDirection', 'barometricPressure', 'relativeHumidity', 'heatIndex']
+        fields = {field_name: float(properties[field_name]["value"]) for field_name in field_names if self.__check_field(properties, field_name)}
+
+        return fields
+
+    def __check_field(self, properties, field_name):
+        checkedField = float(properties[field_name]["value"])
+        return checkedField != None
     
     def current_conditions(self, station_id):
         query_string = f"""select *::field from current_conditions where "station_id" = '{station_id.upper()}' group by station_id order by time desc limit 1"""

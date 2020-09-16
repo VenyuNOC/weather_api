@@ -1,40 +1,35 @@
 import json
 import logging
+import signal
 
-from flask import Flask, render_template, request, jsonify, render_template
-from flask.logging import default_handler
-from scheduler import schedule_jobs
+from scheduler import scheduler, schedule_jobs
 
-from config import config
 from data import weather_data
 from db.influx import InfluxDatabase
-from db.sqlite import SqliteDatabase
 
-from blueprints.weather import weather_app
-from blueprints.weather_api import weather_api
 
-app = Flask(__name__)
-app.config.from_object(config)
-
-log = app.logger
+default_handler = logging.StreamHandler()
 
 for logger in (
     logging.getLogger('db.InfluxDatabase'),
-    logging.getLogger('db.SQLite'),
     logging.getLogger('weather.backend.scheduler')
 ):
     logger.addHandler(default_handler)
     logger.setLevel(logging.DEBUG)
 
+def shutdown(signalNumber, frame):
+    global interrupted
+    interrupted = True
 
-schedule_jobs(weather_data)
-
-app.register_blueprint(weather_app)
-app.register_blueprint(weather_api)
-
-@app.after_request
-def allow_cross_origin(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
+    if scheduler.running:
+        scheduler.shutdown(wait=False)
 
 
+signal.signal(signal.SIGTERM, shutdown)
+interrupted = False
+
+
+if __name__ == "__main__":
+    while not interrupted:
+        if not scheduler.running:
+            schedule_jobs(weather_data)

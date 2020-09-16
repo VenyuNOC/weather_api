@@ -4,8 +4,6 @@ import logging
 
 import influxdb
 
-import converters
-
 
 class InfluxDatabase:
     def __init__(self, host='localhost', port=8086, username='root', password='root', dbname='weather', logger=logging.getLogger('db.InfluxDatabase')):
@@ -75,16 +73,3 @@ class InfluxDatabase:
         self.log.debug(data)
 
         return data
-        
-
-
-if __name__ == "__main__":
-    import requests
-
-    logging.basicConfig(level="DEBUG")
-
-    with InfluxDatabase(dbname='test') as database:
-        r = requests.get("https://api.weather.gov/stations/KBTR/observations/latest")
-        database.submit_conditions('BTR', r.json())
-
-        conditions = database.current_conditions('BTR')

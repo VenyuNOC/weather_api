@@ -47,7 +47,19 @@ class InfluxDatabase:
                     "station_id": station_id
                 },
                 "time": datetime.utcnow(),
+<<<<<<< HEAD:db/influx.py
                 "fields": fields
+=======
+                "fields": {
+                    **({"temperature": float(properties["temperature"]["value"])} if properties["temperature"]["value"] else {}),
+                    **({"dewpoint": float(properties["dewpoint"]["value"])} if properties["dewpoint"]["value"] else {}),
+                    **({"wind_speed": float(properties["windSpeed"]["value"])} if properties["windSpeed"]["value"] else {}),
+                    **({"wind_direction": float(properties["windDirection"]["value"])} if properties["windSpeed"]["direction"] else {}),
+                    **({"barometric_pressure": float(properties["barometricPressure"]["value"])} if properties["barometricPressure"]["value"] else {}),
+                    **({"relative_humidity": float(properties["relativeHumidity"]["value"])} if properties["relativeHumidity"]["value"] else {}),
+                    **({"heat_index": float(properties["heatIndex"]["value"])} if properties["heatIndex"]["value"] else {})
+                }
+>>>>>>> master:app/db/influx.py
             }
         ]
 

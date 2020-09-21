@@ -37,6 +37,8 @@ class InfluxDatabase:
         properties = json_data["properties"]
 
         fields = self.__get_fields(properties)
+        if properties["windDirection"]["value"] is not None:
+            fields['windDirection'] = properties['windDirection']['value']
 
         series_data = [
             {
@@ -54,7 +56,7 @@ class InfluxDatabase:
         self.__db_handle.write_points(series_data)
     
     def __get_fields(self, properties):
-        field_names = ['temperature', 'dewpoint', 'windSpeed', 'windDirection', 'barometricPressure', 'relativeHumidity', 'heatIndex']
+        field_names = ['temperature', 'dewpoint', 'windSpeed', 'barometricPressure', 'relativeHumidity', 'heatIndex']
         fields = {field_name: float(properties[field_name]["value"]) for field_name in field_names if self.__check_field(properties, field_name)}
 
         return fields

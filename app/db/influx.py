@@ -62,7 +62,7 @@ class InfluxDatabase:
         return fields
 
     def __check_field(self, properties, field_name):
-        checkedField = float(properties[field_name]["value"])
+        checkedField = properties[field_name]["value"]
         return checkedField is not None
     
     def current_conditions(self, station_id):

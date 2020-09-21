@@ -63,7 +63,7 @@ class InfluxDatabase:
 
     def __check_field(self, properties, field_name):
         checkedField = float(properties[field_name]["value"])
-        return checkedField != None
+        return checkedField is not None
     
     def current_conditions(self, station_id):
         query_string = f"""select *::field from current_conditions where "station_id" = '{station_id.upper()}' group by station_id order by time desc limit 1"""

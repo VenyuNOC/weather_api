@@ -10,6 +10,7 @@ services:
       - ./app:/usr/src/app
     depends_on:
       - influx
+      - proxy
   influx:
     image: influxdb:1.7-alpine
     container_name: influx
@@ -19,6 +20,11 @@ services:
       - "/opt/data/influx:/var/lib/influxdb"
     ports:
       - "8086:8086"
+  proxy:
+    image: venyunoc/radar-proxy:latest
+    container_name: proxy
+    networks:
+      - monitoring
 networks:
   monitoring:
     external: true

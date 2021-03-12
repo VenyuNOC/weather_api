@@ -1,41 +1,7 @@
 {
-    "locations": [
-        {
-            "id": "BTR",
-            "display_name": "Baton Rouge, LA",
-            "urls": {
-                "forecast": {
-                    "url": "https://api.weather.gov/gridpoints/LIX/27,114/forecast",
-                    "image": "/static/baton_rouge.jpg",
-                    "attribution": "By Valerie Everett - https://www.flickr.com/photos/valeriebb/16247526993/, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=40378527"
-                },
-                "conditions": "https://api.weather.gov/stations/KBTR/observations/latest",
-                "headlines": "https://api.weather.gov/offices/LIX/headlines",
-                "radar": "https://radar.weather.gov/lite/N0R/LIX_loop.gif"
-            }
-        },
-        {
-            "id": "SHV",
-            "display_name": "Shreveport, LA",
-            "urls": {
-                "forecast": {
-                    "url": "https://api.weather.gov/gridpoints/SHV/73,66/forecast",
-                    "image": "/static/shreveport.jpg",
-                    "attribution": "By TheTexasNationalist99 - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=68979488"
-                },
-                "conditions": "https://api.weather.gov/stations/KSHV/observations/latest",
-                "headlines": "https://api.weather.gov/offices/SHV/headlines",
-                "radar": "https://radar.weather.gov/lite/N0R/SHV_loop.gif"
-            }
-        }
-    ],
-    "global": {
-        "urls": {
-            "alerts": "https://api.weather.gov/alerts/active/area/LA",
-            "tropical": {
-                "atlantic": "https://www.nhc.noaa.gov/xgtwo/two_atl_2d0.png",
-                "pacific": "https://www.nhc.noaa.gov/xgtwo/two_pac_2d0.png"
-            }
-        }
+    "alerts": "https://api.weather.gov/alerts/active?zone=LAZ001,LAZ048,LAZ059,LAZ046,LAZ060&severity=severe,extreme",
+    "conditions": {
+        "btr": "https://api.weather.gov/stations/KBTR/observations/latest",
+        "shv": "https://api.weather.gov/stations/KSHV/observations/latest"
     }
 }

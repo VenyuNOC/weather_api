@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "disable_existing_loggers": "False",
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "stream": "ext://sys.stdout"
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "api.log",
+            "level": "DEBUG"
+        }
+    },
+    "loggers": {
+        "uvicorn": {
+            "handlers": ["console"],
+            "level": "INFO"
+        },
+        "app": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG"
+        }
+    }
+}

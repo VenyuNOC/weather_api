@@ -1,6 +1,10 @@
+import logging
 import requests
-from converters import c2f, kmh2mph, nothing
 
+from app.converters import c2f, kmh2mph, nothing
+
+
+logger = logging.getLogger(__name__)
 
 ##
 # update_conditions(url) - Update the current observations at a specific station
@@ -8,7 +12,12 @@ from converters import c2f, kmh2mph, nothing
 # @returns: conditions - dictionary containing the latest measurements for the specified station
 ##
 def update(url):
+    logger.info(f'requested update via {url}')
+
     r = requests.get(url, headers={"Accept": "application/geo+json"})
+    json_data = r.json()
+
+    logger.debug(f'got {json_data}')
 
     props: dict = r.json()['properties']
     

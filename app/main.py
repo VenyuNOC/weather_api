@@ -1,15 +1,23 @@
+import logging
+
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 
-from scheduler import scheduler, get_latest_conditions, get_latest_alerts
+from app.scheduler import scheduler, get_latest_conditions, get_latest_alerts
 
+
+logger = logging.getLogger(__name__)
 
 def conditions_route(request):
     station = request.path_params["station"]
-    return JSONResponse(get_latest_conditions(station))
+    logger.info(f'request for latest conditions at {station}')
+
+    latest = get_latest_conditions(station)
+    logger.debug(f'got latest conditions: {latest}')
+    return JSONResponse(latest)
 
 def alerts_route(request):
     return JSONResponse(get_latest_alerts())

@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 monitored_regions = {
     "East Baton Rouge", "West Baton Rouge", "Livingston", "Ascension", "St. James", "St. Charles", "St. John the Baptist", "Fourchon", "Caddo", "Bossier", "Iberville"
@@ -12,11 +12,11 @@ def update(url):
     raw_alerts = r.json()["features"]
 
     for alert in raw_alerts:
-        expired = datetime.fromisoformat(alert["properties"]["expires"])
-        if expired > datetime.utcnow():
+        expires = datetime.fromisoformat(alert["properties"]["expires"])
+        if expires > datetime.now(timezone.utc):
             alerts.append({
                 "headline": alert["properties"]["headline"],
-                "expiration": alert["properties"]["expires"],
+                "expiration": expires,
                 "severity": alert["properties"]["severity"],
                 "affecting": __get_affected_region(alert["properties"]["areaDesc"])
             })

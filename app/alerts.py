@@ -16,7 +16,7 @@ def update(url):
         if expires > datetime.now(timezone.utc):
             alerts.append({
                 "headline": alert["properties"]["headline"],
-                "expiration": expires,
+                "expiration": expires.isoformat(),
                 "severity": alert["properties"]["severity"],
                 "affecting": __get_affected_region(alert["properties"]["areaDesc"])
             })

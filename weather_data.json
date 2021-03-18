@@ -1,5 +1,5 @@
 {
-    "alerts": "https://api.weather.gov/alerts/active?zone=LAZ001,LAZ048,LAZ059,LAZ046,LAZ060&severity=severe,extreme",
+    "alerts": "https://api.weather.gov/alerts/active?zone=LAZ001,LAZ048,LAZ059,LAZ046,LAZ060&severity=moderate,severe,extreme",
     "conditions": {
         "btr": "https://api.weather.gov/stations/KBTR/observations/latest",
         "shv": "https://api.weather.gov/stations/KSHV/observations/latest"

@@ -5,7 +5,7 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-from app import conditions, alerts
+import conditions, alerts
 
 logger = logging.getLogger(__name__)
 latest_conditions = {

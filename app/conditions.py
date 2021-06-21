@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from app.converters import c2f, kmh2mph, nothing
+from converters import c2f, kmh2mph, nothing
 
 
 logger = logging.getLogger(__name__)

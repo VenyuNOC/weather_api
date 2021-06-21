@@ -6,7 +6,7 @@ from starlette.routing import Route
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 
-from app.scheduler import scheduler, get_latest_conditions, get_latest_alerts
+from scheduler import scheduler, get_latest_conditions, get_latest_alerts
 
 
 logger = logging.getLogger(__name__)
